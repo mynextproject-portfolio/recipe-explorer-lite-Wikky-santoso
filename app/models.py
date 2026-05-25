@@ -24,11 +24,10 @@ class Recipe(BaseModel):
     created_at: datetime = Field(default_factory=datetime.now)
     updated_at: datetime = Field(default_factory=datetime.now)
 
-
-    class Config:
-        json_encoders = {
-            datetime: lambda v: v.isoformat()
-        }
+    def model_dump(self, **kwargs):
+        """Override to serialize datetimes as ISO format strings."""
+        kwargs.setdefault("mode", "json")
+        return super().model_dump(**kwargs)
 
 
 class RecipeCreate(BaseModel):
